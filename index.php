@@ -57,7 +57,7 @@ $row = $students->fetch_assoc();
             <?php if (isset($_SESSION['userLogin'])) {?>
             <td><a href="details.php?id=<?php echo $row['id'];?>">View</td>
             <?php } else { ?>
-            <td><a href="index.php">View</td>
+            <td><a href="#">View</td>
             <?php } ?>
             <td><?php echo $row['last_name']; ?></td>
             <td><?php echo $row['first_name']; ?></td>
