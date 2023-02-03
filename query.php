@@ -8,11 +8,15 @@ include_once 'connections/connection.php';
 
 $conn = connection();
 
-$sql = 'SELECT * FROM student_info ORDER BY id DESC';
+$query =  $_GET['query'];
+
+$sql = "SELECT * FROM student_info WHERE first_name LIKE '%$query%' || last_name LIKE '%$query%' ORDER BY id DESC";
 
 $students = $conn->query($sql) or die($conn->error);
 
 $row = $students->fetch_assoc();
+
+$resultsFound = $students->num_rows;
 
 ?>
 
@@ -31,7 +35,6 @@ $row = $students->fetch_assoc();
 <body>
     
     <h1>STUDENT INFORMATION SYSTEM </h1>
-
     <?php if (isset($_SESSION['userLogin'])) {?>
         <h2>Welcome <?php echo $_SESSION['userLogin'] ?></h2>
     <?php } else { ?>
@@ -52,10 +55,13 @@ $row = $students->fetch_assoc();
     <!-- Search -->
     <br />
     <br />
-    <form action="query.php" method="get">
+    <form action="" method="get">
         <input type="text" placeholder="Search" name="query">
         <input type="submit" value="search">
     </form>
+
+    <!-- Checks if there are results -->
+    <?php if ($resultsFound > 0 ) { ?>
 
     <table>
         <tr>
@@ -76,5 +82,9 @@ $row = $students->fetch_assoc();
         <?php } while ($row = $students->fetch_assoc()); ?>
 
     </table>
+
+    <?php } else { ?>
+        <p>No Results!</p>
+    <?php } ?>
 </body>
 </html>

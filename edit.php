@@ -16,7 +16,7 @@ $conn = connection();
 
 $id = $_GET['id'];
 
-$sql = "SELECT * FROM student_info WHERE id = " . $id;
+$sql = "SELECT * FROM student_info WHERE id = '$id'";
 
 $result = $conn->query($sql) or die($conn->error);
 

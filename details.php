@@ -1,18 +1,26 @@
 <?php
 
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+// Checks if logged in
+
+if (!isset($_SESSION['userLogin'])) {
+    echo header('location: index.php');
+}
+
 include_once 'connections/connection.php';
 
 $conn = connection();
 
 $id = $_GET['id'];
 
-$sql = 'SELECT * FROM student_info WHERE id = ' . $id;
+$sql = "SELECT * FROM student_info WHERE id = '$id'";
 
 $result = $conn->query($sql) or die($conn->error);
 
 $row = $result->fetch_assoc();
-
-
 
 ?>
 
@@ -38,6 +46,12 @@ $row = $result->fetch_assoc();
     <br />
     <p>I Am <?php echo $row['gender']; ?></p>
     <br />
+    <a href="index.php">Back to Home</a>
     <a href="edit.php?id=<?php echo $row['id']; ?>">Edit</a>
+
+    <form action="delete.php" method="post">
+        <input type="hidden" name="id" id="id" value="<?= $row['id']; ?>">
+        <button name="delete">Delete</button>
+    </form>
 </body>
 </html>
